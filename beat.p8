@@ -5,26 +5,37 @@ __lua__
 
 // setup stage + player
 function _init()
+ --last=time()
 
- // setup stage code here
-
- // create player
- // sp=player sprite number
- // score=player's score
  p={
   x=59,
   y=59,
   sp=6,
   score=0
  }
+ note={
+ x,
+ y,
+ dir
+ }
+ 
+ notes={} --notes array
  
  camera(0,0)
+ 
+ track1() --scripted sequence
+          --of notes
+ 
 end
 
 // update player hit location
 // update note movement
 function _update()
  update_player()
+ //update_note()
+ for n in all(notes) do
+  n:update()
+ end
 end
 
 // draw sprites
@@ -37,9 +48,22 @@ function _draw()
  spr(7,p.x+6,p.y)
  spr(7,p.x,p.y-6)
  spr(7,p.x,p.y+6)
+ 
+ for n in all(notes) do
+  n:draw()
+ end
+
 end
 
-// update functions
+function draw_note()
+ //for i=1,#notes do
+ // local mynote=notes[i]
+ // spr(sprnum,mynote.x,mynote.y)
+ //end
+ 
+
+ 
+end
 
 --allows player to hit notes
 --that coming from all directions
@@ -61,10 +85,143 @@ function update_player()
  end
 end
 
+
+
+
+-->8
+//function wait(pause)
+// last=time()
+// while last < time()+pause do
+//  --nothing
+// end
+ 
+//end
+
+
+function track1()
+ new_note("left")
+
+ new_note("up")
+ 
+ new_note("down")
+end
+
 -- move notes towards player
 function update_note()
+
+ --move notes
+ //for i=#notes,1,-1 do
+ // local mynote=notes[i]
+ // mynote.x+=mynote.dx
+ // mynote.y+=mynote.dy
+ //end 
+ 
  
 end
+
+--counter for note's sprite num.
+--spawns notes in the order of
+--red, green, blue, orange
+sprnum = 2
+
+function new_note(dir)
+
+ --this will cycle between
+ --sprite numbers 2-5 for
+ --direction checking to use
+ if sprnum != 6 then
+  sprnum+=1
+ else
+  sprnum=2
+ end
+ 
+ //local newnote={}
+ 
+ --direction checking
+ if dir == "left" then
+  add(notes, {
+   x=0,
+   y=p.y,
+   dx=2,
+   dy=0,
+   d=dir,
+   draw=function(self)
+    spr(sprnum,self.x,self.y)
+   end,
+   update=function(self)
+    self.x+=self.dx
+    self.y+=self.dy
+    if self.x==p.x then
+     del(notes,self)
+    end
+   end
+  })
+ end
+ 
+ if dir == "right" then
+ add(notes, {
+  x=p.x+59,
+  y=p.y,
+  dx=-2,
+  dy=0,
+  d=dir,
+  draw=function(self)
+   spr(sprnum,self.x,self.y)
+  end,
+  update=function(self)
+   self.x+=self.dx
+   self.y+=self.dy
+   if self.x==p.x then
+    del(notes,self)
+   end
+  end
+ })
+ end
+ 
+ if dir == "up" then
+ add(notes, {
+  x=p.x,
+  y=0,
+  dx=0,
+  dy=2,
+  d=dir,
+  draw=function(self)
+   spr(sprnum,self.x,self.y)
+  end,
+  update=function(self)
+   self.x+=self.dx
+   self.y+=self.dy
+   if self.y==p.y then
+    del(notes,self)
+   end
+  end
+ })
+ end
+ 
+ if dir == "down" then
+ add(notes, {
+  x=p.x,
+  y=p.y+59,
+  dx=0,
+  dy=-2,
+  d=dir,
+  draw=function(self)
+   spr(sprnum,self.x,self.y)
+  end,
+  update=function(self)
+   self.x+=self.dx
+   self.y+=self.dy
+   if self.y==p.y then
+    del(notes,self)
+   end
+  end
+ })
+ end
+ 
+ //add(notes,newnote)
+ --spr(sprnum,note.x,note.y)
+ 
+end -- end new_note
 __gfx__
 00000000066666600000000000033000000000000099990000077000007777000000000000000000444444444444444444444444444444440000000000000000
 0000000066000066082222800037b30000cccc000997799000177100070000700000000000000000454444444444444445444444444244440000000000000000
