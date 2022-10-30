@@ -5,7 +5,6 @@ __lua__
 
 // setup stage + player
 function _init()
- --last=time()
 
  p={
   x=59,
@@ -32,13 +31,15 @@ end
 // update note movement
 function _update()
  update_player()
- //update_note()
+ 
+ --call update funct for every
+ --note in notes array
  for n in all(notes) do
   n:update()
  end
 end
 
-// draw sprites
+--draw sprites
 function _draw()
  cls()
  map(0,0)
@@ -49,20 +50,12 @@ function _draw()
  spr(7,p.x,p.y-6)
  spr(7,p.x,p.y+6)
  
+ --call draw funct for every
+ --note in notes array
  for n in all(notes) do
   n:draw()
  end
 
-end
-
-function draw_note()
- //for i=1,#notes do
- // local mynote=notes[i]
- // spr(sprnum,mynote.x,mynote.y)
- //end
- 
-
- 
 end
 
 --allows player to hit notes
@@ -89,34 +82,16 @@ end
 
 
 -->8
-//function wait(pause)
-// last=time()
-// while last < time()+pause do
-//  --nothing
-// end
- 
-//end
+-- note functions
 
-
+--sequence of notes to be hit
+--by player. called by _init
 function track1()
  new_note("left")
-
+ --wait(0.5) 120bpm whole note interval
  new_note("up")
- 
+ --wait(0.5)
  new_note("down")
-end
-
--- move notes towards player
-function update_note()
-
- --move notes
- //for i=#notes,1,-1 do
- // local mynote=notes[i]
- // mynote.x+=mynote.dx
- // mynote.y+=mynote.dy
- //end 
- 
- 
 end
 
 --counter for note's sprite num.
@@ -135,9 +110,13 @@ function new_note(dir)
   sprnum=2
  end
  
- //local newnote={}
- 
  --direction checking
+ 
+ --add new note to notes array
+ --and each note has its own
+ --draw and update function
+ --to be called by _draw,
+ --and _update
  if dir == "left" then
   add(notes, {
    x=0,
@@ -151,6 +130,7 @@ function new_note(dir)
    update=function(self)
     self.x+=self.dx
     self.y+=self.dy
+    --⬇️ not working
     if self.x==p.x then
      del(notes,self)
     end
@@ -217,9 +197,6 @@ function new_note(dir)
   end
  })
  end
- 
- //add(notes,newnote)
- --spr(sprnum,note.x,note.y)
  
 end -- end new_note
 __gfx__
