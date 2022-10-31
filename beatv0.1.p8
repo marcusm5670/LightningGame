@@ -69,7 +69,7 @@ function _draw()
  end
  
  -- print the players current score
- print("current score: "..score, 35, 0 ,3)
+ print("current score: "..score, 35, 0 ,12)
 
 
 end
@@ -104,7 +104,8 @@ end
 function intro() 
  sfx(1)
 	cls()
-	print("press any button to begin!",flr(p.y/3), p.y + 8, 3)
+	print("beat", p.x, p.y, 12)
+	print("press any button to begin!",flr(p.x/3), p.y + 8, 1)
  local input = false
 	while(input == false) do
 		flip()
